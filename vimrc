@@ -6,6 +6,14 @@ set background=dark
 colorscheme solarized
 let mapleader=","
 
+" let g:syntastic_python_checkers=['pep8']
+" let g:syntastic_python_checkers=['pylint']
+" let g:syntastic_python_checkers=['pylama']
+" let g:syntastic_python_checkers=['pyflakes']
+" let g:syntastic_python_checkers=['py3kwarn']
+let g:syntastic_python_checkers=['flake8']
+let g:syntastic_stl_format="[%E{%e Errors} %B{, }%W{%w Warnings}]"
+
 set cursorline
 set ignorecase      " ignore case when searching
 set modeline        " last lines in document sets vim mode
