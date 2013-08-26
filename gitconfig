@@ -1,0 +1,12 @@
+[credential]
+helper = /opt/boxen/bin/boxen-git-credential
+
+[core]
+excludesfile = /opt/boxen/config/git/gitignore
+
+[hub]
+protocol = https
+
+[user]
+name = Adam Torres
+email = atorres@amplify-nation.com
