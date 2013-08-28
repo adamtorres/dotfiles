@@ -62,6 +62,3 @@ if has("statusline") && !&cp
   set statusline+=%{SyntasticStatuslineFlag()}
   set statusline+=%*
 endif
-
-map ,c :s/^/# /<CR>
-map ,u :s/^# //<CR>
