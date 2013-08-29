@@ -8,3 +8,6 @@ alias clean='find . -name *.pyc -delete'
 
 # (\t)ime (\w)orking directory (\n)ewline (\u)ser@(\h)ost
 export PS1="\t \w\n\u@\h: "
+
+#Combines mkdir and cd commands.
+function mkcd () { mkdir -p "$@" && eval cd "\"\$$#\""; }
