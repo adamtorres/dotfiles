@@ -4,7 +4,7 @@ source /opt/boxen/env.sh
 alias ls='ls -laphtr'
 
 # Removes cached python files
-alias clean='find . -name *.pyc -delete'
+alias clean='find . -name *.pyc -delete && find . -type d -name __pycache__ -delete'
 
 # (\t)ime (\w)orking directory (\n)ewline (\u)ser@(\h)ost
 export PS1="\t \w\n\u@\h: "
