@@ -12,7 +12,7 @@ alias clean='find . -name *.pyc -delete && find . -type d -name __pycache__ -del
 
 # Run coverage.  If no errors, build html report and open in default browser.
 # The omit option removes third party libraries from the report.
-alias cover='coverage run --omit=/opt/boxen/pyenv* -m unittest discover && coverage html && open htmlcov/index.html'
+alias cover='coverage run --omit=/opt/boxen/pyenv*,tests/* -m unittest discover && coverage html && open htmlcov/index.html'
 
 # (\t)ime (\w)orking directory (\n)ewline (\u)ser@(\h)ost
 export PS1="\t \w\n\u@\h: "
