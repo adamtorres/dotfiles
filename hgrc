@@ -1,2 +1,5 @@
 [ui]
-username = Adam Torres <atorres@groupconvergence.com>
+username = Adam Torres <atorres@amplify-nation.com>
+
+[defaults]
+log = -f
