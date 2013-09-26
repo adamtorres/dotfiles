@@ -25,3 +25,9 @@ export PS1="\t \w\n\u@\h: "
 
 #Combines mkdir and cd commands.
 function mkcd () { mkdir -p "$@" && eval cd "\"\$$#\""; }
+
+# Get syntax highlighting on less command.
+# need to run 'brew install source-highlight'
+LESSPIPE=`which src-hilite-lesspipe.sh`
+export LESSOPEN="| ${LESSPIPE} %s"
+export LESS='-R'
