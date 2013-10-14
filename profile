@@ -1,8 +1,8 @@
 source /opt/boxen/env.sh
 
 # (l)ong, (a)ll, (p)ath marked, (h)uman numbers, (t)ime sorted, (r)everse sort
-alias lsl='ls -laph'
-alias lst='ls -laphtr'
+alias ll='ls -laph'
+alias lt='ls -laphtr'
 
 # A sorta short version of tree which only shows 2 levels of folders
 alias bush='tree -d -L 2 -I "__pycache__|.hg|.DS_Store|htmlcov|.hgcheck"'
