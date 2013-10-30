@@ -20,6 +20,9 @@ alias cover='coverage run --omit=/opt/boxen/pyenv*,tests/*,src/* -m unittest dis
 # Useful for spotting links pointing to silly locations.
 alias pylinks="find /opt/boxen/pyenv/versions -iname *.egg-link -exec sh -c 'echo {}; cat {}; echo' \;"
 
+# Simple shortcut to ssh into the dev server.
+alias gogodev='ssh ubuntu@staging.amplify-nation.com'
+
 # (\t)ime (\w)orking directory (\n)ewline (\u)ser@(\h)ost
 export PS1="\t \w\n\u@\h: "
 

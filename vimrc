@@ -29,6 +29,7 @@ set visualbell
 set tabstop=4
 set shiftwidth=4
 set expandtab
+set mouse=a
 
 " set cursorline to center vertically
 set so=9999
