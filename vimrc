@@ -12,7 +12,7 @@ let mapleader=","
 " let g:syntastic_python_checkers=['pyflakes']
 " let g:syntastic_python_checkers=['py3kwarn']
 let g:syntastic_python_checkers=['flake8']
-let g:syntastic_stl_format="[%E{%e Errors} %B{, }%W{%w Warnings}]"
+let g:syntastic_stl_format="[%E{#%fe Err(%e)} %B{, }%W{#%fw Warn(%w)}]"
 
 set cursorline
 set ignorecase      " ignore case when searching

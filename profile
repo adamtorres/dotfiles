@@ -23,6 +23,9 @@ alias pylinks="find /opt/boxen/pyenv/versions -iname *.egg-link -exec sh -c 'ech
 # Simple shortcut to ssh into the dev server.
 alias gogodev='ssh ubuntu@staging.amplify-nation.com'
 
+# List open network connections while hiding the ones from boring applications and such we likely don't care about.
+alias op='lsof -i -P | grep -v -e ^Microsoft -e ^Dropbox -e ^BetterTou -e ^HipChat -e ^GitHub -e ^Google -e ^Finder -e ^Office365'
+
 # (\t)ime (\w)orking directory (\n)ewline (\u)ser@(\h)ost
 export PS1="\t \w\n\u@\h: "
 
