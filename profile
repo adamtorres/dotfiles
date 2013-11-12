@@ -7,6 +7,7 @@ alias lt='ls -laphtr'
 # A sorta short version of tree which only shows 2 levels of folders
 alias bush='tree -d -L 2 -I "__pycache__|.hg|.DS_Store|htmlcov|.hgcheck|src"'
 alias tree='tree -a -I "__pycache__|.hg|.DS_Store|htmlcov|.hgcheck|src" --dirsfirst'
+alias realtree='/opt/boxen/homebrew/bin/tree'
 
 # Removes cached python files
 alias clean='find . -name *.pyc -delete && find . -type d -name __pycache__ -delete'
