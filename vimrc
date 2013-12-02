@@ -30,6 +30,7 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 set mouse=a
+set clipboard+=unnamed
 
 " set cursorline to center vertically
 set so=9999
