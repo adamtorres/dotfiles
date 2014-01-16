@@ -31,6 +31,8 @@ set shiftwidth=4
 set expandtab
 set mouse=a
 set clipboard+=unnamed
+set foldmethod=indent
+set foldlevel=99
 
 " set cursorline to center vertically
 set so=9999
