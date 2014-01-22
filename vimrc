@@ -31,8 +31,8 @@ set shiftwidth=4
 set expandtab
 set mouse=a
 set clipboard+=unnamed
-set foldmethod=indent
-set foldlevel=99
+" set foldmethod=indent
+" set foldlevel=99
 
 " set cursorline to center vertically
 set so=9999
@@ -57,7 +57,7 @@ if has("statusline") && !&cp
   set statusline=%F%m%r%h%w
 
   " Add fugitive
-  set statusline+=\ %{fugitive#statusline()}
+"   set statusline+=\ %{fugitive#statusline()}
 
   set statusline+=\ [ASC=\%03.3b]\ [#=\%02.2B]\ [%p%%]\ [%4v]
 

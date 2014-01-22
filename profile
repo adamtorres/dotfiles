@@ -27,6 +27,9 @@ alias gogodev='ssh ubuntu@staging.amplify-nation.com'
 # List open network connections while hiding the ones from boring applications and such we likely don't care about.
 alias op='lsof -i -P | grep -v -e ^Microsoft -e ^Dropbox -e ^BetterTou -e ^HipChat -e ^GitHub -e ^Google -e ^Finder -e ^Office365'
 
+# Tell me What Is Going On
+alias wigo='python -V; pyenv version'
+
 # (\t)ime (\w)orking directory (\n)ewline (\u)ser@(\h)ost
 export PS1="\t \w\n\u@\h: "
 
