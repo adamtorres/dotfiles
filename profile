@@ -45,3 +45,14 @@ export LESS='-R'
 #[[ -s ~/.autojump/etc/profile.d/autojump.bash ]] && . ~/.autojump/etc/profile.d/autojump.bash
 
 [[ -s `brew --prefix`/etc/autojump.sh ]] && . `brew --prefix`/etc/autojump.sh
+
+# Search a single file or all files for class/def and show sorted output.
+function zort() {
+    if [ "x$1" == "x" ]; then
+        (ag "def " -w -G "\.py$"; ag "class " -w -G "\.py$") | sort -t : -k 1,1 -k 2,2g
+        # echo "Searched all"
+    else
+        (ag "def " $1 -w; ag "class " $1 -w) | sort -t : -k 1,1g
+        # echo "Searched one"
+    fi
+}
