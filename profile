@@ -14,7 +14,10 @@ alias clean='find . -name *.pyc -delete && find . -type d -name __pycache__ -del
 
 # Run coverage.  If no errors, build html report and open in default browser.
 # The omit option removes third party libraries from the report.
-alias cover='coverage run --omit=/opt/boxen/pyenv*,tests/*,src/* -m unittest discover && coverage html && open htmlcov/index.html'
+# Include orb
+alias coverorb='coverage run --omit=/opt/boxen/pyenv*,tests/*,src/* -m unittest discover ; coverage html ; open htmlcov/index.html'
+# Exclude orb
+alias cover='coverage run --omit=/opt/boxen/pyenv*,tests/*,src/*,../orb/* -m unittest discover ; coverage html ; open htmlcov/index.html'
 
 # Find and show all links to source being used by pyenv versions.
 # Output is the path/name of the egg-link and the contents showing where the link is pointing.
