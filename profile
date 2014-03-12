@@ -33,6 +33,22 @@ alias op='lsof -i -P | grep -v -e ^Microsoft -e ^Dropbox -e ^BetterTou -e ^HipCh
 # Tell me What Is Going On
 alias wigo='python -V; pyenv version'
 
+# Git Alias's
+alias glt="git log --graph --decorate --pretty=oneline --abbrev-commit"
+alias gco="git checkout"
+alias gcb="git checkout -b"
+alias gtb="git branch"
+alias gcm="git commit"
+
+# hg Alias's
+alias hgs="hg status"
+alias hgb="hg branch"
+alias hgbs="hg branches"
+alias hgl="hg log --template '{node|short} | {date|isodatesec} | {author|user}: {desc|strip|firstline}\\n' | less"
+alias hgll="hg log -G -l9 | less"
+alias hgco="hg checkout"
+alias hgcm="hg commit"
+
 # (\t)ime (\w)orking directory (\n)ewline (\u)ser@(\h)ost
 export PS1="\t \w\n\u@\h: "
 
