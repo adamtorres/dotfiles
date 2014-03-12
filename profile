@@ -59,3 +59,6 @@ function zort() {
         # echo "Searched one"
     fi
 }
+
+# Since I didn't install mongodb via boxen, need to manually set this.
+export BOXEN_MONGODB_PORT=27017
