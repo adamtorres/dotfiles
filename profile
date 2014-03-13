@@ -48,6 +48,11 @@ alias hgl="hg log --template '{node|short} | {date|isodatesec} | {author|user}: 
 alias hgll="hg log -G -l9 | less"
 alias hgco="hg checkout"
 alias hgcm="hg commit"
+function hgv() {
+    # Get the working set revision number for all hg repos starting at the current location.
+    # This is a function because I couldn't get the quotes to be happy in an alias.
+    find . -name .hg -exec bash -c 'var={}; var=${var%/*}; pushd $var > /dev/null; rev=`hg identify --num`; echo -e "$rev\t$var"; popd > /dev/null;' \;
+}
 
 # (\t)ime (\w)orking directory (\n)ewline (\u)ser@(\h)ost
 export PS1="\t \w\n\u@\h: "
