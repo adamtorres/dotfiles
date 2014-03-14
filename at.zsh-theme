@@ -49,9 +49,10 @@ function box_name {
 local current_dir='${PWD/#$HOME/~}'
 local current_vcs='${vcs_info_msg_0_}'
 
-local node_version='$(/opt/boxen/nodenv/bin/nodenv version | sed -e "s/ (set.*$//")'
-local python_version='$(/opt/boxen/pyenv/bin/pyenv version-name)'
-local ruby_version='$(/opt/boxen/rbenv/bin/rbenv version-name)'
+# local node_version='$(/opt/boxen/nodenv/bin/nodenv version | sed -e "s/ (set.*$//")'
+local python_env='$(/opt/boxen/pyenv/bin/pyenv version-name)'
+local python_version='$(python -c "import platform; print(platform.python_version())")'
+# local ruby_version='$(/opt/boxen/rbenv/bin/rbenv version-name)'
 
 # Prompt format: \n # USER at MACHINE in DIRECTORY on git:BRANCH STATE [TIME] \n $ 
 PROMPT="
@@ -60,4 +61,4 @@ PROMPT="
 %{$fg_bold[red]%}$ %{$reset_color%}"
 
 # Right-side prompt: python/ruby versions
-RPROMPT="%{$fg[gray]%}[N:${node_version}] [P:${python_version}] [R:${ruby_version}]%{$reset_color%} %{$fg[white]%}[%*]%{$reset_color%}"
+RPROMPT="%{$fg[gray]%} [P:${python_env}/${python_version}]%{$reset_color%} %{$fg[white]%}[%*]%{$reset_color%}"
