@@ -3,3 +3,7 @@ username = Adam Torres <atorres@amplify-nation.com>
 
 [defaults]
 log = -f
+
+[extensions]
+shelve=$HOME/.hgext/hgshelve.py
+hgpunchcard=$HOME/.hgext/hgpunchcard.py

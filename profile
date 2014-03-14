@@ -5,8 +5,8 @@ alias ll='ls -laph'
 alias lt='ls -laphtr'
 
 # A sorta short version of tree which only shows 2 levels of folders
-alias bush='tree -d -L 2 -I "__pycache__|.hg|.DS_Store|htmlcov|.hgcheck|src"'
-alias tree='tree -a -I "__pycache__|.hg|.DS_Store|htmlcov|.hgcheck|src" --dirsfirst'
+alias bush='tree -d -L 2 -I "__pycache__|.hg|.git|.DS_Store|htmlcov|.hgcheck|src"'
+alias tree='tree -a -I "__pycache__|.hg|.git|.DS_Store|htmlcov|.hgcheck|src" --dirsfirst'
 alias realtree='/opt/boxen/homebrew/bin/tree'
 
 # Removes cached python files
@@ -44,8 +44,8 @@ alias gcm="git commit"
 alias hgs="hg status"
 alias hgb="hg branch"
 alias hgbs="hg branches"
-alias hgl="hg log --template '{node|short} | {date|isodatesec} | {author|user}: {desc|strip|firstline}\\n' | less"
-alias hgll="hg log -G -l9 | less"
+alias hgl="hg log --template '{rev} | {node|short} | {date|isodatesec} | {author|user}: {desc|strip|firstline}\\n' | less"
+alias hgll="hg log -G -l9 --template 'changeset:   {rev}:{node|short}\\nbranch:      {branch}\\nparent:      {p1rev}:{p1node|short}{ifeq(p2rev, \"-1\", \"\", \", {p2rev}:{p2node|short}\")}\\nuser:        {author}\\ndate:        {date}\\ndescription: {desc}\\n\\n' | less"
 alias hgco="hg checkout"
 alias hgcm="hg commit"
 function hgv() {
