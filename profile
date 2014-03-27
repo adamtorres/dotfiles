@@ -80,3 +80,10 @@ function zort() {
         # echo "Searched one"
     fi
 }
+
+# idea: simple find/replace function to make it easier to do rather than
+# always having to google for methods.
+# find . -type f -name '$PATTERN' -exec sed -i '' 's/$OLD/$NEW/g' {} +
+
+# Apply settings for SOS apps
+. ~/.sos_init

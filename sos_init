@@ -1,0 +1,30 @@
+export WKHTMLTOPDF_CMD="/opt/wkhtmltopdf/bin/wkhtmltopdf"
+export TMP_ROOT="$HOME/Projects/tmp"
+
+if [ ! -d $TMP_ROOT ]; then
+    echo "Need to create the TMP_ROOT at $TMP_ROOT."
+    # Probably don't need sudo but don't want to assume here.
+    sudo mkdir $TMP_ROOT
+
+    # Need to set the user/group to the one running the services.
+    # Assuming the current user for now.
+    sudo chown `id -un`:`id -gn` $TMP_ROOT
+fi
+export SOS_LOG_ROOT=/var/log/sos
+if [ ! -d $SOS_LOG_ROOT ]; then
+    echo "Need to create the SOS_LOG_ROOT at $SOS_LOG_ROOT."
+    sudo mkdir -p $SOS_LOG_ROOT
+
+    # Need to set the user/group to the one running the services.
+    # Assuming the current user for now.
+    sudo chown `id -un`:`id -gn` $SOS_LOG_ROOT
+fi
+
+SERVICES=("rules-engine" "direct-mail" "sms-backend" "email-backend" "sos" "cstore")
+for SERVICE in ${SERVICES[@]}
+do
+    LOG_DIR="$SOS_LOG_ROOT/$SERVICE"
+    if [ ! -d $LOG_DIR ]; then
+        mkdir -p $LOG_DIR
+    fi
+done
