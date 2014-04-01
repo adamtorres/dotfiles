@@ -81,6 +81,20 @@ function zort() {
     fi
 }
 
+function ytdl() {
+    if [ "x$1" == "x" ]; then
+        echo ""
+        echo "youtube-dl shortcut usage:"
+        echo "  ytdl [url]"
+        echo "Will convert to:"
+        echo "  youtube-dl --max-quality mp4 --write-info-json --write-description [url]"
+        echo ""
+    else
+        echo "youtube-dl --max-quality mp4 --write-info-json --write-description $1"
+        youtube-dl --max-quality mp4 --write-info-json --write-description $1
+    fi
+}
+
 # idea: simple find/replace function to make it easier to do rather than
 # always having to google for methods.
 # find . -type f -name '$PATTERN' -exec sed -i '' 's/$OLD/$NEW/g' {} +
