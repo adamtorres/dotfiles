@@ -54,6 +54,10 @@ function hgv() {
     find . -name .hg -exec bash -c 'var={}; var=${var%/*}; pushd $var > /dev/null; rev=`hg identify --num`; branch=`hg branch`; echo -e "$rev\t$var\t$branch"; popd > /dev/null;' \; | expand -t 10,50
 }
 
+# Not exactly the same as lsusb but does what I need when I think of lsusb.
+# That is, list the usb devices.
+alias lsusb='system_profiler SPUSBDataType'
+
 # (\t)ime (\w)orking directory (\n)ewline (\u)ser@(\h)ost
 export PS1="\t \w\n\u@\h: "
 
@@ -89,15 +93,43 @@ function ytdl() {
         echo "Will convert to:"
         echo "  youtube-dl --max-quality mp4 --write-info-json --write-description [url]"
         echo ""
+        exit 1
     else
         echo "youtube-dl --max-quality mp4 --write-info-json --write-description $1"
         youtube-dl --max-quality mp4 --write-info-json --write-description $1
     fi
 }
 
+function mp4to3() {
+    if [ "x$1" == "x" ]; then
+        echo ""
+        echo "mp4to3 [filename.mp4]"
+        echo ""
+        exit 1
+    fi
+    OUT_FILE=`echo "$1" | sed 's/\.[^\.]*$/.mp3/'`
+    /Applications/VLC.app/Contents/MacOS/VLC -I dummy "$1" --sout='#transcode{acodec=mp3,vcodec=dummy}:standard{access=file,mux=raw,dst="$(echo "$OUT_FILE")"}' vlc://quit
+}
+# for file in /Users/$USER/Music/*.mp4;
+# do
+#     /Applications/VLC.app/Contents/MacOS/VLC -I dummy "$file" --sout="#transcode{acodec=mp3,vcodec=dummy}:standard{access=file,mux=raw,dst=\"$(echo "$file" | sed 's/\.[^\.]*$/.mp3/')\"}" vlc://quit;
+# done
+
 # idea: simple find/replace function to make it easier to do rather than
 # always having to google for methods.
 # find . -type f -name '$PATTERN' -exec sed -i '' 's/$OLD/$NEW/g' {} +
+
+# sha1/md5 hashing
+# openssl sha1 [filename]
+# md5 [filename]
+
+# Nifty brace expansion
+# mv name.{txt,bak}
+# renames name.txt to name.bak
+# echo {1..5}
+# echos "1 2 3 4 5"
+# echo {1,5}
+# echos "1 5"
 
 # Apply settings for SOS apps
 . ~/.sos_init
