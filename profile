@@ -29,13 +29,16 @@ alias pylinks="find /opt/boxen/pyenv/versions -iname *.egg-link -exec sh -c 'ech
 alias gogodev='ssh ubuntu@staging.amplify-nation.com'
 
 # List open network connections while hiding the ones from boring applications and such we likely don't care about.
-alias op='lsof -i -P | grep -v -e ^Microsoft -e ^Dropbox -e ^BetterTou -e ^HipChat -e ^GitHub -e ^Google -e ^Finder -e ^Office365'
+alias op='lsof -i -P | grep -v -e ^Microsoft -e ^Dropbox -e ^BetterTou -e ^HipChat -e ^GitHub -e ^Google -e ^Finder -e ^Office365 -e ^firefox -e ^sharingd -e ^SystemUIS -e UserEvent -e ^ARDAgent'
 
 # List the running python scripts.  The [p] seems to remove the 'grep' from the output rather than having to pipe again to 'grep -v grep'.
 alias running='ps aux | grep [p]ython'
 
 # Tell me What Is Going On
 alias wigo='python -V; pyenv version'
+
+# Tell me What Is Really Going On
+alias wirgo='printf "\nEnvironment:\n"; wigo; printf "\nRunning Scripts:\n"; running; printf "\nOpen Ports:\n"; op;'
 
 # Git Alias's
 alias glt="git log --graph --decorate --pretty=oneline --abbrev-commit"
