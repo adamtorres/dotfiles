@@ -1,4 +1,5 @@
 source /opt/boxen/env.sh
+export PATH=$PATH:/opt/wkhtmltopdf/bin
 
 # (l)ong, (a)ll, (p)ath marked, (h)uman numbers, (t)ime sorted, (r)everse sort
 alias ll='ls -laph'
@@ -29,6 +30,9 @@ alias gogodev='ssh ubuntu@staging.amplify-nation.com'
 
 # List open network connections while hiding the ones from boring applications and such we likely don't care about.
 alias op='lsof -i -P | grep -v -e ^Microsoft -e ^Dropbox -e ^BetterTou -e ^HipChat -e ^GitHub -e ^Google -e ^Finder -e ^Office365'
+
+# List the running python scripts.  The [p] seems to remove the 'grep' from the output rather than having to pipe again to 'grep -v grep'.
+alias running='ps aux | grep [p]ython'
 
 # Tell me What Is Going On
 alias wigo='python -V; pyenv version'
