@@ -122,6 +122,21 @@ function mp4to3() {
 function set_title() {
     echo -ne "\033]0;$@\007"
 }
+
+function get_project() {
+    tmp=${PWD#$HOME/Projects/}
+    if [ "$tmp" == "$PWD" ]; then
+        echo -n ${PWD#$HOME/}
+    else
+        # With subdirs
+        # echo -n $tmp
+        # Without subdirs
+        echo -n "${tmp%%/*}"
+    fi
+}
+export PROMPT_COMMAND='set_title `get_project`'
+# export PROMPT_COMMAND='echo -ne "\033]0;`get_project`\007"'
+
 # for file in /Users/$USER/Music/*.mp4;
 # do
 #     /Applications/VLC.app/Contents/MacOS/VLC -I dummy "$file" --sout="#transcode{acodec=mp3,vcodec=dummy}:standard{access=file,mux=raw,dst=\"$(echo "$file" | sed 's/\.[^\.]*$/.mp3/')\"}" vlc://quit;
