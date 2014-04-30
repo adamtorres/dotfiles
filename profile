@@ -117,6 +117,11 @@ function mp4to3() {
     OUT_FILE=`echo "$1" | sed 's/\.[^\.]*$/.mp3/'`
     /Applications/VLC.app/Contents/MacOS/VLC -I dummy "$1" --sout='#transcode{acodec=mp3,vcodec=dummy}:standard{access=file,mux=raw,dst="$(echo "$OUT_FILE")"}' vlc://quit
 }
+
+# Sets the terminal title to whatever is passed in.
+function set_title() {
+    echo -ne "\033]0;$@\007"
+}
 # for file in /Users/$USER/Music/*.mp4;
 # do
 #     /Applications/VLC.app/Contents/MacOS/VLC -I dummy "$file" --sout="#transcode{acodec=mp3,vcodec=dummy}:standard{access=file,mux=raw,dst=\"$(echo "$file" | sed 's/\.[^\.]*$/.mp3/')\"}" vlc://quit;
