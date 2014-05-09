@@ -60,6 +60,15 @@ function hgv() {
     # This is a function because I couldn't get the quotes to be happy in an alias.
     find . -name .hg -exec bash -c 'var={}; var=${var%/*}; pushd $var > /dev/null; rev=`hg identify --num`; branch=`hg branch`; echo -e "$rev\t$var\t$branch"; popd > /dev/null;' \; | expand -t 10,50
 }
+alias hgf="hg flow"
+alias hgfr="hg flow release start"
+alias hgfh="hg flow hotfix start"
+alias hgff="hg flow feature start"
+alias hgflr='hg branches --closed | grep -i "^release"'
+alias hgflh='hg branches --closed | grep -i "^hotfix"'
+alias hgflf='hg branches --closed | grep -i "^feature"'
+
+alias c='printf "\nDon'"'"'t wanna clear the screen.\n\n"'
 
 # Not exactly the same as lsusb but does what I need when I think of lsusb.
 # That is, list the usb devices.

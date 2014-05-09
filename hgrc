@@ -7,3 +7,15 @@ log = -f
 [extensions]
 shelve=$HOME/.hgext/hgshelve.py
 hgpunchcard=$HOME/.hgext/hgpunchcard.py
+
+mq=
+rebase=
+flow=$HOME/.hgext/hgflow.py
+
+[flow]
+# Do not use.  Causes error:
+#   flow: error: Hg command failed: hg qpop
+#   flow: error: abort: 'dict' object has no attribute 'write'
+# And leaves a *.pch file in .hg/patches/flow/feature/*.pch
+# And content in .hg/patches/[series|status]
+# autoshelve=true
