@@ -72,13 +72,14 @@ alias hgflr='hg branches --closed | grep -i "^release"'
 alias hgflh='hg branches --closed | grep -i "^hotfix"'
 alias hgflf='hg branches --closed | grep -i "^feature"'
 
-# What Did I Do?
-alias wdid='wdsd atorres@amplify-nation.com'
-
-# What Did Somebody Do?
-function wdsd () {
-    hg log -u "$1" --template "{rev} | {node|short} | {date|isodatesec} | {author|user}: {desc|strip|tabindent}\n" --date ">yesterday"
-}
+# Nice idea but not reliable.  Seems to follow only the current branch's history.
+# # What Did I Do?
+# alias wdid='wdsd atorres@amplify-nation.com'
+#
+# # What Did Somebody Do?
+# function wdsd () {
+#     hg log -u "$1" --template "{rev} | {node|short} | {date|isodatesec} | {author|user} | {branches}\n\t{desc|strip|tabindent}\n" --date ">yesterday"
+# }
 
 alias c='printf "\nDon'"'"'t wanna clear the screen.\n\n"'
 
