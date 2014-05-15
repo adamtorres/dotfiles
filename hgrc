@@ -19,3 +19,4 @@ flow=$HOME/.hgext/hgflow.py
 # And leaves a *.pch file in .hg/patches/flow/feature/*.pch
 # And content in .hg/patches/[series|status]
 # autoshelve=true
+version_prefix=

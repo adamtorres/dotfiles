@@ -1,6 +1,10 @@
 source /opt/boxen/env.sh
 export PATH=$PATH:/opt/wkhtmltopdf/bin
 
+# No clue why this happened but java command line failed at some point.
+# Have to manually set this.
+export JAVA_HOME="/Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/"
+
 # (l)ong, (a)ll, (p)ath marked, (h)uman numbers, (t)ime sorted, (r)everse sort
 alias ll='ls -laph'
 alias lt='ls -laphtr'
@@ -67,6 +71,14 @@ alias hgff="hg flow feature start"
 alias hgflr='hg branches --closed | grep -i "^release"'
 alias hgflh='hg branches --closed | grep -i "^hotfix"'
 alias hgflf='hg branches --closed | grep -i "^feature"'
+
+# What Did I Do?
+alias wdid='wdsd atorres@amplify-nation.com'
+
+# What Did Somebody Do?
+function wdsd () {
+    hg log -u "$1" --template "{rev} | {node|short} | {date|isodatesec} | {author|user}: {desc|strip|tabindent}\n" --date ">yesterday"
+}
 
 alias c='printf "\nDon'"'"'t wanna clear the screen.\n\n"'
 
