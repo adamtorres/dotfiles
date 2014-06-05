@@ -137,7 +137,24 @@ function mp4to3() {
         exit 1
     fi
     OUT_FILE=`echo "$1" | sed 's/\.[^\.]*$/.mp3/'`
-    /Applications/VLC.app/Contents/MacOS/VLC -I dummy "$1" --sout='#transcode{acodec=mp3,vcodec=dummy}:standard{access=file,mux=raw,dst="$(echo "$OUT_FILE")"}' vlc://quit
+    echo "OUT_FILE='$OUT_FILE'"
+    /Applications/VLC.app/Contents/MacOS/VLC -I dummy "$1" --sout='#transcode{acodec=mp3,vcodec=dummy}:standard{access=file,mux=raw,dst="this_is_a_temp_file.mp3"}' vlc://quit
+    mv this_is_a_temp_file.mp3 "$OUT_FILE"
+}
+
+function radioshow() {
+    if [ "x$2" == "x" ]; then
+        echo ""
+        echo "radioshow [url] [number]"
+        echo ""
+        exit 1
+    fi
+
+    MP4_FILE=`youtube-dl --get-filename --output "RadioShow-$2-%(upload_date)s.%(ext)s" $1`
+    echo "MP4_FILE='$MP4_FILE'"
+
+    youtube-dl --continue --format mp4 --output "$MP4_FILE" $1
+    mp4to3 $MP4_FILE
 }
 
 # Sets the terminal title to whatever is passed in.
