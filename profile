@@ -1,5 +1,5 @@
 source /opt/boxen/env.sh
-export PATH=$PATH:/opt/wkhtmltopdf/bin
+export PATH=$PATH:/opt/wkhtmltopdf/bin:/opt/ngrok
 
 # No clue why this happened but java command line failed at some point.
 # Have to manually set this.
@@ -31,12 +31,20 @@ alias pylinks="find /opt/boxen/pyenv/versions -iname *.egg-link -exec sh -c 'ech
 
 # Simple shortcut to ssh into the dev server.
 alias gogodev='ssh ubuntu@staging.amplify-nation.com'
+alias gogoh='echo "ssh -X -p 64079 adam@1.2.3.4"'
+# motion control # ssh -L 1234:127.0.0.1:8080 -L 1235:127.0.0.1:8081 -L 1236:127.0.0.1:8082 adam@1.2.3.4 -p 64079
+# For the dlink webcam # ssh -L 1234:1.2.3.105:554 adam@1.2.3.4 -p 64079
 
 # List open network connections while hiding the ones from boring applications and such we likely don't care about.
 alias op='lsof -i -P | grep -v -e ^Microsoft -e ^Dropbox -e ^BetterTou -e ^HipChat -e ^GitHub -e ^Google -e ^Finder -e ^Office365 -e ^firefox -e ^sharingd -e ^SystemUIS -e UserEvent -e ^ARDAgent'
 
 # List the running python scripts.  The [p] seems to remove the 'grep' from the output rather than having to pipe again to 'grep -v grep'.
 alias running='ps aux | grep [p]ython'
+# function pidof() {
+#     # PIDS=`ps ax | grep -i "$1" | grep -v "grep -i" | awk "{ print \$1 }" | tr '\n' ' '`
+#     PIDS=`ps ax | awk "{if(index(\$5, \"$1\")>0) print \$1}" | tr '\n' ' '`
+#     echo "Found these $PIDS"
+# }
 
 # Tell me What Is Going On
 alias wigo='python -V; pyenv version'
@@ -62,7 +70,7 @@ alias hgcm="hg commit"
 function hgv() {
     # Get the working set revision number for all hg repos starting at the current location.
     # This is a function because I couldn't get the quotes to be happy in an alias.
-    find . -name .hg -exec bash -c 'var={}; var=${var%/*}; pushd $var > /dev/null; rev=`hg identify --num`; branch=`hg branch`; echo -e "$rev\t$var\t$branch"; popd > /dev/null;' \; | expand -t 10,50
+    find . -name .hg -exec bash -c 'var={}; var=${var%/*}; pushd $var > /dev/null; rev=`hg identify --num --id`; branch=`hg branch`; echo -e "$rev\t$var\t$branch"; popd > /dev/null;' \; | expand -t 25,50
 }
 alias hgf="hg flow"
 alias hgfr="hg flow release start"
@@ -71,6 +79,29 @@ alias hgff="hg flow feature start"
 alias hgflr='hg branches --closed | grep -i "^release"'
 alias hgflh='hg branches --closed | grep -i "^hotfix"'
 alias hgflf='hg branches --closed | grep -i "^feature"'
+
+function uphg() {
+    declare -a repos=(
+    "orb"
+    "triggers"
+    "sos"
+    "rules-engine"
+    "direct-mail"
+    "email-backend"
+    "sms-backend"
+    "livecall-backend"
+    "cstore"
+    )
+
+    for r in "${repos[@]}"
+    do
+        echo "========================================="
+        pushd ~/Projects/$r > /dev/null
+        hg pull -u
+        popd > /dev/null
+        echo ""
+    done
+}
 
 # Nice idea but not reliable.  Seems to follow only the current branch's history.
 # # What Did I Do?
@@ -150,11 +181,19 @@ function radioshow() {
         exit 1
     fi
 
+    KEEP_VIDEO="Yes"
+    if [ "x$3" == "xkeep-video" ]; then
+        KEEP_VIDEO="No"
+    fi
+
     MP4_FILE=`youtube-dl --get-filename --output "RadioShow-$2-%(upload_date)s.%(ext)s" $1`
     echo "MP4_FILE='$MP4_FILE'"
 
     youtube-dl --continue --format mp4 --output "$MP4_FILE" $1
     mp4to3 $MP4_FILE
+    if [ "$KEEP_VIDEO" == "No" ]; then
+        rm $MP4_FILE
+    fi
 }
 
 # Sets the terminal title to whatever is passed in.
@@ -199,3 +238,5 @@ export PROMPT_COMMAND='set_title `get_project`'
 
 # Apply settings for SOS apps
 . ~/.sos_init
+
+. ~/.ssh/home_alias
