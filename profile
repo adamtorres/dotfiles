@@ -1,5 +1,5 @@
 source /opt/boxen/env.sh
-export PATH=$PATH:/opt/wkhtmltopdf/bin:/opt/ngrok
+export PATH=$PATH:/opt/wkhtmltopdf/bin:/opt/ngrok:/opt/utils
 
 # No clue why this happened but java command line failed at some point.
 # Have to manually set this.
@@ -15,7 +15,7 @@ alias tree='tree -a -I "__pycache__|.hg|.git|.DS_Store|htmlcov|.hgcheck|src" --d
 alias realtree='/opt/boxen/homebrew/bin/tree'
 
 # Removes cached python files
-alias clean='find . -name *.pyc -delete && find . -type d -name __pycache__ -delete'
+alias clean='find . -name *.pyc -delete && find . -type d -name __pycache__ -delete && find . -name *.*.orig -delete'
 
 # Run coverage.  If no errors, build html report and open in default browser.
 # The omit option removes third party libraries from the report.
@@ -30,7 +30,7 @@ alias cover='coverage run --omit=/opt/boxen/pyenv*,tests/*,src/*,../orb/* -m uni
 alias pylinks="find /opt/boxen/pyenv/versions -iname *.egg-link -exec sh -c 'echo {}; cat {}; echo' \;"
 
 # Simple shortcut to ssh into the dev server.
-alias gogodev='ssh ubuntu@staging.amplify-nation.com'
+alias gogodev='ssh -i ~/.ssh/macbookair_id_rsa ubuntu@staging.amplify-nation.com'
 alias gogoh='echo "ssh -X -p 64079 adam@1.2.3.4"'
 # motion control # ssh -L 1234:127.0.0.1:8080 -L 1235:127.0.0.1:8081 -L 1236:127.0.0.1:8082 adam@1.2.3.4 -p 64079
 # For the dlink webcam # ssh -L 1234:1.2.3.105:554 adam@1.2.3.4 -p 64079
@@ -70,7 +70,7 @@ alias hgcm="hg commit"
 function hgv() {
     # Get the working set revision number for all hg repos starting at the current location.
     # This is a function because I couldn't get the quotes to be happy in an alias.
-    find . -name .hg -exec bash -c 'var={}; var=${var%/*}; pushd $var > /dev/null; rev=`hg identify --num --id`; branch=`hg branch`; echo -e "$rev\t$var\t$branch"; popd > /dev/null;' \; | expand -t 25,50
+    find . -name .hg -exec bash -c 'var={}; var=${var%/*}; pushd $var > /dev/null; revnum=`hg identify --num`; revid=`hg identify --id`; branch=`hg branch`; echo -e "$revid\t$revnum\t$var\t$branch"; popd > /dev/null;' \; | expand -t 15,23,60
 }
 alias hgf="hg flow"
 alias hgfr="hg flow release start"
@@ -91,13 +91,17 @@ function uphg() {
     "sms-backend"
     "livecall-backend"
     "cstore"
+    "test/cstore"
     )
 
     for r in "${repos[@]}"
     do
         echo "========================================="
+        echo "Processing $r"
         pushd ~/Projects/$r > /dev/null
         hg pull -u
+        b=`hg branch`
+        echo "Currently on branch '$b'"
         popd > /dev/null
         echo ""
     done
