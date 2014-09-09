@@ -1,5 +1,6 @@
 [ui]
 username = Adam Torres <atorres@amplify-nation.com>
+ssh = ssh -C
 
 [defaults]
 log = -f
