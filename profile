@@ -30,13 +30,18 @@ alias cover='coverage run --omit=/opt/boxen/pyenv*,tests/*,src/*,../orb/* -m uni
 alias pylinks="find /opt/boxen/pyenv/versions -iname *.egg-link -exec sh -c 'echo {}; cat {}; echo' \;"
 
 # Simple shortcut to ssh into the dev server.
-alias gogodev='ssh -i ~/.ssh/macbookair_id_rsa ubuntu@staging.amplify-nation.com'
+alias gogodev='ssh -i ~/.ssh/macbookair_id_rsa ubuntu@10.1.10.214'
+alias govpncs='ssh -i ~/.ssh/macbookair_id_rsa ubuntu@staging.amplify-nation.com -p 63218 -L 6432:127.0.0.1:6432'
 alias gogoh='echo "ssh -X -p 64079 adam@1.2.3.4"'
 # motion control # ssh -L 1234:127.0.0.1:8080 -L 1235:127.0.0.1:8081 -L 1236:127.0.0.1:8082 adam@1.2.3.4 -p 64079
 # For the dlink webcam # ssh -L 1234:1.2.3.105:554 adam@1.2.3.4 -p 64079
 
 # List open network connections while hiding the ones from boring applications and such we likely don't care about.
 alias op='lsof -i -P | grep -v -e ^Microsoft -e ^Dropbox -e ^BetterTou -e ^HipChat -e ^GitHub -e ^Google -e ^Finder -e ^Office365 -e ^firefox -e ^sharingd -e ^SystemUIS -e UserEvent -e ^ARDAgent'
+
+# Flush DNS with a hammer.
+alias fdns='sudo killall -HUP mDNSResponder'
+# alias fdns='sudo dscacheutil -flushcache'
 
 # List the running python scripts.  The [p] seems to remove the 'grep' from the output rather than having to pipe again to 'grep -v grep'.
 alias running='ps aux | grep [p]ython'
@@ -91,6 +96,7 @@ function uphg() {
     "sms-backend"
     "livecall-backend"
     "cstore"
+    "cstore_bugs"
     "test/cstore"
     )
 
