@@ -88,6 +88,7 @@ alias hgflf='hg branches --closed | grep -i "^feature"'
 function uphg() {
     declare -a repos=(
     "orb"
+    "imb"
     "triggers"
     "sos"
     "rules-engine"
@@ -97,6 +98,8 @@ function uphg() {
     "livecall-backend"
     "cstore"
     "cstore_bugs"
+    "cstore_imb"
+    "cstore_imb/src/imb"
     "test/cstore"
     )
 
@@ -165,8 +168,9 @@ function ytdl() {
         echo ""
         exit 1
     else
-        echo "youtube-dl --max-quality mp4 --write-info-json --write-description $1"
-        youtube-dl --max-quality mp4 --write-info-json --write-description $1
+        echo "youtube-dl --max-quality mp4 $1"
+        # youtube-dl --max-quality mp4 --write-info-json --write-description $1
+        youtube-dl --max-quality mp4 $1
     fi
 }
 
@@ -180,6 +184,32 @@ function mp4to3() {
     OUT_FILE=`echo "$1" | sed 's/\.[^\.]*$/.mp3/'`
     echo "OUT_FILE='$OUT_FILE'"
     /Applications/VLC.app/Contents/MacOS/VLC -I dummy "$1" --sout='#transcode{acodec=mp3,vcodec=dummy}:standard{access=file,mux=raw,dst="this_is_a_temp_file.mp3"}' vlc://quit
+    mv this_is_a_temp_file.mp3 "$OUT_FILE"
+}
+
+function mp3towav() {
+    if [ "x$1" == "x" ]; then
+        echo ""
+        echo "mp3towav [filename.mp3]"
+        echo ""
+        exit 1
+    fi
+    OUT_FILE=`echo "$1" | sed 's/\.[^\.]*$/.wav/'`
+    echo "OUT_FILE='$OUT_FILE'"
+    /Applications/VLC.app/Contents/MacOS/VLC -I dummy "$1" --no-sout-video --sout-audio --no-sout-rtp-sap --no-sout-standard-sap --ttl=1 --sout-keep --sout '#transcode{acodec=s16l,channels=2,samplerate=44100}:std{access=file,mux=wav,dst="this_is_a_temp_file.wav"}' vlc://quit
+    mv this_is_a_temp_file.wav "$OUT_FILE"
+}
+
+function wavtomp3() {
+    if [ "x$1" == "x" ]; then
+        echo ""
+        echo "wavtomp3 [filename.wav]"
+        echo ""
+        exit 1
+    fi
+    OUT_FILE=`echo "$1" | sed 's/\.[^\.]*$/.mp3/'`
+    echo "OUT_FILE='$OUT_FILE'"
+    /Applications/VLC.app/Contents/MacOS/VLC -I dummy "$1" --no-sout-video --sout-audio --no-sout-rtp-sap --no-sout-standard-sap --ttl=1 --sout-keep --sout '#transcode{acodec=mp3,channels=2,samplerate=44100}:std{access=file,mux=raw,dst="this_is_a_temp_file.mp3"}' vlc://quit
     mv this_is_a_temp_file.mp3 "$OUT_FILE"
 }
 
