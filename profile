@@ -17,6 +17,11 @@ alias realtree='/opt/boxen/homebrew/bin/tree'
 # Removes cached python files
 alias clean='find . -name *.pyc -delete && find . -type d -name __pycache__ -delete && find . -name *.*.orig -delete'
 
+# Compress and decompress txt files inplace.  Removes original file.  One file per compressed file.
+# Made for compressing many daily/history files so each is its own compressed file.
+alias comptxt="find . -type f -iname '*.txt' -print -exec gzip {} \;"
+alias uncomptxt="find . -type f -iname '*.txt.gz' -print -exec gunzip {} \;"
+
 # Run coverage.  If no errors, build html report and open in default browser.
 # The omit option removes third party libraries from the report.
 # Include orb
@@ -29,6 +34,9 @@ alias cover='coverage run --omit=/opt/boxen/pyenv*,tests/*,src/*,../orb/* -m uni
 # Useful for spotting links pointing to silly locations.
 alias pylinks="find /opt/boxen/pyenv/versions -iname *.egg-link -exec sh -c 'echo {}; cat {}; echo' \;"
 
+# Show missing migrations.  Output will be a list of all apps and only migrations which have not been run.
+alias mm='./manage.py migrate --list | grep -v "\(\*\)"'
+
 # Simple shortcut to ssh into the dev server.
 alias gogodev='ssh -i ~/.ssh/macbookair_id_rsa ubuntu@10.1.10.214'
 alias govpncs='ssh -i ~/.ssh/macbookair_id_rsa ubuntu@staging.amplify-nation.com -p 63218 -L 6432:127.0.0.1:6432'
@@ -37,7 +45,7 @@ alias gogoh='echo "ssh -X -p 64079 adam@1.2.3.4"'
 # For the dlink webcam # ssh -L 1234:1.2.3.105:554 adam@1.2.3.4 -p 64079
 
 # List open network connections while hiding the ones from boring applications and such we likely don't care about.
-alias op='lsof -i -P | grep -v -e ^Microsoft -e ^Dropbox -e ^BetterTou -e ^HipChat -e ^GitHub -e ^Google -e ^Finder -e ^Office365 -e ^firefox -e ^sharingd -e ^SystemUIS -e UserEvent -e ^ARDAgent'
+alias op='lsof -n -i -P | grep -v -e ^Microsoft -e ^Dropbox -e ^BetterTou -e ^HipChat -e ^GitHub -e ^Google -e ^Finder -e ^Office365 -e ^firefox -e ^sharingd -e ^SystemUIS -e UserEvent -e ^ARDAgent'
 
 # Flush DNS with a hammer.
 alias fdns='sudo killall -HUP mDNSResponder'
@@ -56,6 +64,7 @@ alias wigo='python -V; pyenv version'
 
 # Tell me What Is Really Going On
 alias wirgo='printf "\nEnvironment:\n"; wigo; printf "\nRunning Scripts:\n"; running; printf "\nOpen Ports:\n"; op;'
+
 
 # Git Alias's
 alias glt="git log --graph --decorate --pretty=oneline --abbrev-commit"
@@ -91,6 +100,7 @@ function uphg() {
     "imb"
     "triggers"
     "sos"
+    "sos_bug"
     "rules-engine"
     "direct-mail"
     "email-backend"
@@ -98,6 +108,7 @@ function uphg() {
     "livecall-backend"
     "cstore"
     "cstore_bugs"
+    "cstore-pull-req"
     "cstore_imb"
     "cstore_imb/src/imb"
     "test/cstore"
@@ -164,7 +175,7 @@ function ytdl() {
         echo "youtube-dl shortcut usage:"
         echo "  ytdl [url]"
         echo "Will convert to:"
-        echo "  youtube-dl --max-quality mp4 --write-info-json --write-description [url]"
+        echo "  youtube-dl --max-quality mp4 [url]"
         echo ""
         exit 1
     else
@@ -255,6 +266,9 @@ function get_project() {
 export PROMPT_COMMAND='set_title `get_project`'
 # export PROMPT_COMMAND='echo -ne "\033]0;`get_project`\007"'
 
+function tailpg() {
+    tail -f $(ls -tr /opt/boxen/data/postgresql-9.4/pg_log/postgresql-* | tail -n 1)
+}
 # for file in /Users/$USER/Music/*.mp4;
 # do
 #     /Applications/VLC.app/Contents/MacOS/VLC -I dummy "$file" --sout="#transcode{acodec=mp3,vcodec=dummy}:standard{access=file,mux=raw,dst=\"$(echo "$file" | sed 's/\.[^\.]*$/.mp3/')\"}" vlc://quit;

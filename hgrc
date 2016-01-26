@@ -2,6 +2,9 @@
 username = Adam Torres <atorres@amplify-nation.com>
 ssh = ssh -C
 
+[alias]
+out2 = !$HG -q outgoing --style ~/Projects/dotfiles/hg_outgoing_style.txt | sort -u
+
 [defaults]
 log = -f
 
