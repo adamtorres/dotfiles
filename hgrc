@@ -9,12 +9,12 @@ out2 = !$HG -q outgoing --style ~/Projects/dotfiles/hg_outgoing_style.txt | sort
 log = -f
 
 [extensions]
-shelve=$HOME/.hgext/hgshelve.py
+# shelve=$HOME/.hgext/hgshelve.py
 hgpunchcard=$HOME/.hgext/hgpunchcard.py
-
 mq=
 rebase=
 flow=$HOME/.hgext/hgflow.py
+hgext.extdiff=
 
 [flow]
 # Do not use.  Causes error:
@@ -24,3 +24,12 @@ flow=$HOME/.hgext/hgflow.py
 # And content in .hg/patches/[series|status]
 # autoshelve=true
 version_prefix=
+
+#   $parent1, $plabel1 - filename, descriptive label of first parent
+#   $child,   $clabel  - filename, descriptive label of child revision
+#   $parent2, $plabel2 - filename, descriptive label of second parent
+#   $root              - repository root
+#   $parent is an alias for $parent1.
+[extdiff]
+cmd.vdiff = $HOME/Projects/dotfiles/vault-diff
+

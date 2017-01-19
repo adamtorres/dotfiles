@@ -1,5 +1,15 @@
-source /opt/boxen/env.sh
-export PATH=$PATH:/opt/wkhtmltopdf/bin:/opt/ngrok:/opt/utils
+# source /opt/boxen/env.sh
+export PYENV_ROOT='/opt/pyenv'
+export PATH="$PYENV_ROOT/bin:$PATH"
+if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
+
+export RBENV_ROOT='/opt/rbenv'
+eval "$(rbenv init -)"
+
+export MANPATH="/usr/local/opt/findutils/libexec/gnuman:$MANPATH"
+
+# export PATH=$PATH:/opt/wkhtmltopdf/bin:/opt/ngrok:/opt/utils
 
 # No clue why this happened but java command line failed at some point.
 # Have to manually set this.
@@ -11,8 +21,8 @@ alias lt='ls -laphtr'
 
 # A sorta short version of tree which only shows 2 levels of folders
 alias bush='tree -d -L 2 -I "__pycache__|.hg|.git|.DS_Store|htmlcov|.hgcheck|src"'
-alias tree='tree -a -I "__pycache__|.hg|.git|.DS_Store|htmlcov|.hgcheck|src" --dirsfirst'
-alias realtree='/opt/boxen/homebrew/bin/tree'
+alias tree='tree -a -I "__pycache__|.hg|.git|.DS_Store|htmlcov|.hgcheck|src|.idea" --dirsfirst'
+alias realtree='/usr/local/bin/tree'
 
 # Removes cached python files
 alias clean='find . -name *.pyc -delete && find . -type d -name __pycache__ -delete && find . -name *.*.orig -delete'
@@ -35,7 +45,7 @@ alias cover='coverage run --omit=/opt/boxen/pyenv*,tests/*,src/*,../orb/* -m uni
 alias pylinks="find /opt/boxen/pyenv/versions -iname *.egg-link -exec sh -c 'echo {}; cat {}; echo' \;"
 
 # Show missing migrations.  Output will be a list of all apps and only migrations which have not been run.
-alias mm='./manage.py migrate --list | grep -v "\(\*\)"'
+alias mm='./manage.py showmigrations | grep -v -e "\[\X\]" -e "\(\*\)"'
 
 # Simple shortcut to ssh into the dev server.
 alias gogodev='ssh -i ~/.ssh/macbookair_id_rsa ubuntu@10.1.10.214'
@@ -45,7 +55,13 @@ alias gogoh='echo "ssh -X -p 64079 adam@1.2.3.4"'
 # For the dlink webcam # ssh -L 1234:1.2.3.105:554 adam@1.2.3.4 -p 64079
 
 # List open network connections while hiding the ones from boring applications and such we likely don't care about.
-alias op='lsof -n -i -P | grep -v -e ^Microsoft -e ^Dropbox -e ^BetterTou -e ^HipChat -e ^GitHub -e ^Google -e ^Finder -e ^Office365 -e ^firefox -e ^sharingd -e ^SystemUIS -e UserEvent -e ^ARDAgent'
+alias op='lsof -n -i -P | grep -v -e ^Microsoft -e ^Dropbox -e ^BetterTou -e ^HipChat -e ^GitHub -e ^Google -e ^Finder -e ^Office365 -e ^firefox -e ^sharingd -e ^SystemUIS -e UserEvent -e ^ARDAgent -e ^Slack -e ^WiFi -e ^com\.apple'
+
+# Cuts stdin to width out terminal as reported by 'tput cols'.  Subtracts 5 to give a little gap.  Works in pipes
+alias ctw='cut -c1-$(($(tput cols)-5))'
+
+# Excludes the 32 character queues added by celery chords.
+alias exclude_chords='grep -v -E "[a-z0-9]{32}"'
 
 # Flush DNS with a hammer.
 alias fdns='sudo killall -HUP mDNSResponder'
@@ -65,6 +81,11 @@ alias wigo='python -V; pyenv version'
 # Tell me What Is Really Going On
 alias wirgo='printf "\nEnvironment:\n"; wigo; printf "\nRunning Scripts:\n"; running; printf "\nOpen Ports:\n"; op;'
 
+# What is running.  shows the various bits likely involved with the project.
+alias wir='(ps -ef | head -n 1; ps -ef | grep -E -e "(celery|uwsgi|nginx|python)" | grep -v "(celery|uwsgi|nginx|python)" | sort -k8 | cut -c1-250)'
+
+# Keep a pg password in the env without having it show in command history or in a file.
+alias cache_pgpassword='read -s -p "Enter something> " PGPASSWORD; export PGPASSWORD; echo .'
 
 # Git Alias's
 alias glt="git log --graph --decorate --pretty=oneline --abbrev-commit"
@@ -179,11 +200,27 @@ function ytdl() {
         echo ""
         exit 1
     else
-        echo "youtube-dl --max-quality mp4 $1"
+        echo "youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best' $1"
         # youtube-dl --max-quality mp4 --write-info-json --write-description $1
-        youtube-dl --max-quality mp4 $1
+        youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best' $1
     fi
 }
+
+function ytdlm() {
+    if [ "x$1" == "x" ]; then
+        echo ""
+        echo "youtube-dl (for music) shortcut usage:"
+        echo "  ytdlm [url]"
+        echo "Will convert to:"
+        echo "  youtube-dl -f 'bestaudio[ext=m4a]/best[ext=mp4]/best' [url]"
+        echo ""
+        exit 1
+    else
+        echo "youtube-dl -f 'bestaudio[ext=m4a]/best[ext=mp4]/best' $1"
+        youtube-dl -f 'bestaudio[ext=m4a]/best[ext=mp4]/best' $1
+    fi
+}
+
 
 function mp4to3() {
     if [ "x$1" == "x" ]; then
@@ -253,7 +290,7 @@ function set_title() {
 }
 
 function get_project() {
-    tmp=${PWD#$HOME/Projects/}
+    tmp=${PWD#$HOME/Projects/APCO-SOS/}
     if [ "$tmp" == "$PWD" ]; then
         echo -n ${PWD#$HOME/}
     else
@@ -267,7 +304,9 @@ export PROMPT_COMMAND='set_title `get_project`'
 # export PROMPT_COMMAND='echo -ne "\033]0;`get_project`\007"'
 
 function tailpg() {
-    tail -f $(ls -tr /opt/boxen/data/postgresql-9.4/pg_log/postgresql-* | tail -n 1)
+    (ls -1t ~/Projects/APCO-SOS/logs/postgres/postgresql*.log | head -n 1 && tail -F $(ls -1t ~/Projects/APCO-SOS/logs/postgres/postgresql*.log | head -n 1))
+    # (ls -1t /usr/local/var/postgres/pg_log/postgresql*.log | head -n 1 && tail -F $(ls -1t /usr/local/var/postgres/pg_log/postgresql*.log | head -n 1))
+    # tail -f $(ls -1tr /opt/boxen/data/postgresql-9.4/pg_log/postgresql-* | tail -n 1)
 }
 # for file in /Users/$USER/Music/*.mp4;
 # do
@@ -289,8 +328,5 @@ function tailpg() {
 # echos "1 2 3 4 5"
 # echo {1,5}
 # echos "1 5"
-
-# Apply settings for SOS apps
-. ~/.sos_init
 
 . ~/.ssh/home_alias

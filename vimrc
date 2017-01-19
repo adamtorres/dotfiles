@@ -1,9 +1,9 @@
-execute pathogen#infect()
+""""""" execute pathogen#infect()
 syntax on
 filetype plugin indent on
 
 set background=dark
-colorscheme solarized
+""""""" colorscheme solarized
 let mapleader=","
 
 " let g:syntastic_python_checkers=['pep8']
@@ -11,8 +11,8 @@ let mapleader=","
 " let g:syntastic_python_checkers=['pylama']
 " let g:syntastic_python_checkers=['pyflakes']
 " let g:syntastic_python_checkers=['py3kwarn']
-let g:syntastic_python_checkers=['flake8']
-let g:syntastic_stl_format="[%E{#%fe Err(%e)} %B{, }%W{#%fw Warn(%w)}]"
+""""""" let g:syntastic_python_checkers=['flake8']
+""""""" let g:syntastic_stl_format="[%E{#%fe Err(%e)} %B{, }%W{#%fw Warn(%w)}]"
 
 set cursorline
 set ignorecase      " ignore case when searching
@@ -63,6 +63,6 @@ if has("statusline") && !&cp
 
   " Add syntastic if enabled
   set statusline+=\ %#warningmsg#
-  set statusline+=%{SyntasticStatuslineFlag()}
+  """""""  set statusline+=%{SyntasticStatuslineFlag()}
   set statusline+=%*
 endif
