@@ -96,6 +96,7 @@ alias gcm="git commit"
 
 # hg Alias's
 alias hgs="hg status"
+alias hgss='hgs | grep "^[^?]"'
 alias hgb="hg branch"
 alias hgbs="hg branches"
 alias hgl="hg log --template '{rev} | {node|short} | {date|isodatesec} | {author|user}: {desc|strip|firstline}\\n' | less"
@@ -114,6 +115,20 @@ alias hgff="hg flow feature start"
 alias hgflr='hg branches --closed | grep -i "^release"'
 alias hgflh='hg branches --closed | grep -i "^hotfix"'
 alias hgflf='hg branches --closed | grep -i "^feature"'
+
+# What Have I Done!?  Compares current to default.
+# alias whid="hg diff -r $(hg id --num -r default)"
+function whid() {
+    hg diff -r `hg id --num -r default`
+}
+
+function find_comments_default() {
+    hg diff -r `hg id --num -r default` | grep -E -e "^\+ +#" -e "^diff"
+}
+
+function find_comments_develop() {
+    hg diff -r `hg id --num -r develop` | grep -E -e "^\+ +#" -e "^diff"
+}
 
 function uphg() {
     declare -a repos=(
