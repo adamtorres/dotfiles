@@ -101,6 +101,12 @@ alias hgb="hg branch"
 alias hgbs="hg branches"
 alias hgl="hg log --template '{rev} | {node|short} | {date|isodatesec} | {author|user}: {desc|strip|firstline}\\n' | less"
 alias hgll="hg log -G -l9 --template 'changeset:   {rev}:{node|short}\\nbranch:      {branch}\\nparent:      {p1rev}:{p1node|short}{ifeq(p2rev, \"-1\", \"\", \", {p2rev}:{p2node|short}\")}\\nuser:        {author}\\ndate:        {date}\\ndescription: {desc}\\n\\n' | less"
+function hglm() {
+    echo "Looking for merges in $(hg branch)."
+    echo "rev | node | p1rev | p2rev | branch | date | user | desc_first_line";
+    hg log --template '{rev} | {node|short} | {p1rev} | {p2rev} | {branch} | {date|isodatesec} | {author|user} | {desc|strip|firstline}\n' --limit 50 --branch "$(hg branch)" | grep -i ' | merge '
+}
+alias hgld="hg log --template '{rev} | {node|short} | {branch} | {date|isodatesec} | {author|user} | {desc|strip|firstline}\n' --limit 10 --branch default"
 alias hgco="hg checkout"
 alias hgcm="hg commit"
 function hgv() {
@@ -315,6 +321,7 @@ function get_project() {
         echo -n "${tmp%%/*}"
     fi
 }
+
 export PROMPT_COMMAND='set_title `get_project`'
 # export PROMPT_COMMAND='echo -ne "\033]0;`get_project`\007"'
 
@@ -345,3 +352,7 @@ function tailpg() {
 # echos "1 5"
 
 . ~/.ssh/home_alias
+
+# iterm shell integration didn't work nice.
+# Random stack exchange showed this and it worked.  Would need to work up something to tell when ssh starts and switch.
+# echo -e "\033]50;SetProfile=ampops\a"
