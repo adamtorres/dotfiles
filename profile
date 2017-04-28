@@ -129,12 +129,9 @@ function whid() {
     hg diff -r $(hg id --num -r $(hg log -r "max(ancestors($(hg branch)) and not branch($(hg branch)))" --limit 1 --template '{branch}'))
 }
 
-function find_comments_default() {
-    hg diff -r `hg id --num -r default` | grep -E -e "^\+ +#" -e "^diff"
-}
-
-function find_comments_develop() {
-    hg diff -r `hg id --num -r develop` | grep -E -e "^\+ +#" -e "^diff"
+# Show comments in the current branch.  Helpful to spot commented debug code and inappropriate comments.
+function find_comments() {
+    hg diff -r $(hg id --num -r $(hg log -r "max(ancestors($(hg branch)) and not branch($(hg branch)))" --limit 1 --template '{branch}')) | grep -E -e "^\+ +#" -e "^diff"
 }
 
 function uphg() {
