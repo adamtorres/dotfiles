@@ -10,6 +10,7 @@ eval "$(rbenv init -)"
 export MANPATH="/usr/local/opt/findutils/libexec/gnuman:$MANPATH"
 
 # export PATH=$PATH:/opt/wkhtmltopdf/bin:/opt/ngrok:/opt/utils
+export PATH=$PATH:/opt/mongodb/bin:/opt/redis/bin
 
 # No clue why this happened but java command line failed at some point.
 # Have to manually set this.
@@ -95,12 +96,13 @@ alias gtb="git branch"
 alias gcm="git commit"
 
 # hg Alias's
+alias hgd='hg diff | grep "^[!-+]"'
 alias hgs="hg status"
 alias hgss='hgs | grep "^[^?]"'
 alias hgb="hg branch"
 alias hgbs="hg branches"
 alias hgl="hg log --template '{rev} | {node|short} | {date|isodatesec} | {author|user}: {desc|strip|firstline}\\n' | less"
-alias hgll="hg log -G -l9 --template 'changeset:   {rev}:{node|short}\\nbranch:      {branch}\\nparent:      {p1rev}:{p1node|short}{ifeq(p2rev, \"-1\", \"\", \", {p2rev}:{p2node|short}\")}\\nuser:        {author}\\ndate:        {date}\\ndescription: {desc}\\n\\n' | less"
+alias hgll="hg log -G -l9 --template 'changeset:   {rev}:{node|short}\\nbranch:      {branch}\\nparent:      {p1rev}:{p1node|short}{ifeq(p2rev, \"-1\", \"\", \", {p2rev}:{p2node|short}\")}\\nuser:        {author}\\ndate:        {date|isodatesec}\\ndescription: {desc}\\n\\n' | less"
 function hglm() {
     echo "Looking for merges in $(hg branch)."
     echo "rev | node | p1rev | p2rev | branch | date | user | desc_first_line";
@@ -122,10 +124,9 @@ alias hgflr='hg branches --closed | grep -i "^release"'
 alias hgflh='hg branches --closed | grep -i "^hotfix"'
 alias hgflf='hg branches --closed | grep -i "^feature"'
 
-# What Have I Done!?  Compares current to default.
-# alias whid="hg diff -r $(hg id --num -r default)"
+# What Have I Done!?  Compares current to the ancestor. The inner 'hg log' attempts to find the parent.  That should result in 'develop' or 'default'.
 function whid() {
-    hg diff -r `hg id --num -r default`
+    hg diff -r $(hg id --num -r $(hg log -r "max(ancestors($(hg branch)) and not branch($(hg branch)))" --limit 1 --template '{branch}'))
 }
 
 function find_comments_default() {
@@ -195,6 +196,15 @@ function mkcd () { mkdir -p "$@" && eval cd "\"\$$#\""; }
 LESSPIPE=`which src-hilite-lesspipe.sh`
 export LESSOPEN="| ${LESSPIPE} %s"
 export LESS='-R'
+
+# ### LESS ###
+# # Enable syntax-highlighting in less.
+# # brew install source-highlight
+# # First, add these two lines to ~/.bashrc
+# export LESSOPEN="| /usr/local/bin/src-hilite-lesspipe.sh %s"
+# export LESS=" -R "
+# alias less='less -m -N -g -i -J --underline-special --SILENT'
+# alias more='less'
 
 #[[ -s ~/.autojump/etc/profile.d/autojump.bash ]] && . ~/.autojump/etc/profile.d/autojump.bash
 
