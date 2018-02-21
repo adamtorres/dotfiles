@@ -33,3 +33,8 @@ version_prefix=
 [extdiff]
 cmd.vdiff = $HOME/Projects/dotfiles/vault-diff
 
+
+# Would like these patterns to be applied to diff
+# [merge-patterns]
+# **/sensitive.yml = cmd.vdiff
+# group_vars/*.yml = cmd.vdiff

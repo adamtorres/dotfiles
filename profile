@@ -100,7 +100,7 @@ alias hgd='hg diff | grep "^[!-+]"'
 alias hgs="hg status"
 alias hgss='hgs | grep "^[^?]"'
 alias hgb="hg branch"
-alias hgbs="hg branches"
+alias hgbs="hg branches | sort"
 alias hgl="hg log --template '{rev} | {node|short} | {date|isodatesec} | {author|user}: {desc|strip|firstline}\\n' | less"
 alias hgll="hg log -G -l9 --template 'changeset:   {rev}:{node|short}\\nbranch:      {branch}\\nparent:      {p1rev}:{p1node|short}{ifeq(p2rev, \"-1\", \"\", \", {p2rev}:{p2node|short}\")}\\nuser:        {author}\\ndate:        {date|isodatesec}\\ndescription: {desc}\\n\\n' | less"
 function hglm() {
@@ -206,6 +206,14 @@ export LESS='-R'
 #[[ -s ~/.autojump/etc/profile.d/autojump.bash ]] && . ~/.autojump/etc/profile.d/autojump.bash
 
 [[ -s `brew --prefix`/etc/autojump.sh ]] && . `brew --prefix`/etc/autojump.sh
+
+function hnt() {
+    # Head N Tail
+    echo "head $1"
+    head "$1"
+    echo "tail $1"
+    tail "$1"
+}
 
 # Search a single file or all files for class/def and show sorted output.
 function zort() {
@@ -358,8 +366,22 @@ function tailpg() {
 # echo {1,5}
 # echos "1 5"
 
+function show_settings(){
+    # Only shows the lines in a file which do not begin with '#'.
+    # For lines which don't begin with '#', will strip off any trailing comments - looks for the first '#' and includes preceeding whitespace.
+    # '#' could have preceeding whitespace.
+    # Sorts output.  This could be used to diff settings in config files.
+    grep -v -E -e "^[[:space:]]*[#]" -e "^$" "$1" | sed -e "s/[[:space:]]*#.*$//" -e "s/[[:space:]]*$//" | sort
+}
+
 . ~/.ssh/home_alias
 
 # iterm shell integration didn't work nice.
 # Random stack exchange showed this and it worked.  Would need to work up something to tell when ssh starts and switch.
 # echo -e "\033]50;SetProfile=ampops\a"
+
+function space_used() {
+    echo "Docker"; du -d 1 -h ~/Library/Containers/com.docker.docker/Data;
+    echo "APCO Logs"; du -d 1 -h ~/Projects/APCO-SOS/logs;
+    # plus any other common places that eat up space.
+}

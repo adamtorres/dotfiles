@@ -3,9 +3,9 @@
 # Compare the working copy to revision 32.
 # hg vdiff group_vars/vagrant.yml --rev 32
 
-# echo "0 = _$0_"
-# echo "1 = _$1_"
-# echo "2 = _$2_"
+echo "0 = _$0_"
+echo "1 = _$1_"
+echo "2 = _$2_"
 
 mydir=$(mktemp -d "${TMPDIR:-/tmp/}$(basename "$0").XXXXXXXXXXXX")
 if [ ! -d "$mydir" ]; then
@@ -16,8 +16,8 @@ trap "rm -rf $mydir" EXIT
 
 repo_copy="$mydir/repo_copy"
 working_copy="$mydir/working_copy"
-/opt/pyenv/versions/amplify-launch-codes/bin/ansible-vault --vault-password-file=~/.ansible_vault decrypt "$1" --output="$repo_copy" > /dev/null
-/opt/pyenv/versions/amplify-launch-codes/bin/ansible-vault --vault-password-file=~/.ansible_vault decrypt "$2" --output="$working_copy" > /dev/null
+/opt/pyenv/versions/amplify-codes/bin/ansible-vault --vault-password-file=~/.ansible_vault decrypt "$1" --output="$repo_copy" > /dev/null
+/opt/pyenv/versions/amplify-codes/bin/ansible-vault --vault-password-file=~/.ansible_vault decrypt "$2" --output="$working_copy" > /dev/null
 
 echo "vvvv diff -C 3 \"$repo_copy\" \"$working_copy\""
 diff -C 3 "$repo_copy" "$working_copy"
