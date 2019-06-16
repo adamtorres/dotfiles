@@ -1,8 +1,25 @@
-[credential]
-helper = /opt/boxen/bin/boxen-git-credential
+#### Do not have boxen anymore
+# [credential]
+# helper = /opt/boxen/bin/boxen-git-credential
+# [core]
+# 	excludesfile = /opt/boxen/config/git/gitignore
+#### Do not have sourcetree installed.  yet.
+# [difftool "sourcetree"]
+# 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+# 	path = 
+# [mergetool "sourcetree"]
+# 	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+# 	trustExitCode = true
 
-[core]
-	excludesfile = /opt/boxen/config/git/gitignore
+#### TODO: Find out what these are about
+# [commit]
+# 	template = /Users/adam/.stCommitMsg
+# [filter "lfs"]
+# 	process = git-lfs filter-process
+# 	required = true
+# 	clean = git-lfs clean -- %f
+# 	smudge = git-lfs smudge -- %f
+
 editor = vim
 
 [hub]
@@ -10,10 +27,9 @@ protocol = https
 
 [user]
 	name = Adam Torres
-	email = atorres@amplify-nation.com
-[difftool "sourcetree"]
-	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path = 
-[mergetool "sourcetree"]
-	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-	trustExitCode = true
+	email = adamprogrammer@gmail.com
+
+[core]
+	excludesfile = /Users/adam/.gitignore_global
+
+

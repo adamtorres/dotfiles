@@ -3,6 +3,7 @@ export PYENV_ROOT='/opt/pyenv'
 export PATH="$PYENV_ROOT/bin:$PATH"
 if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
+export PATH="/Users/atorres/NotBackedUp/NOTWORK/Nexus/platform-tools:$PATH"
 
 export RBENV_ROOT='/opt/rbenv'
 eval "$(rbenv init -)"
@@ -101,8 +102,9 @@ alias hgs="hg status"
 alias hgss='hgs | grep "^[^?]"'
 alias hgb="hg branch"
 alias hgbs="hg branches | sort"
-alias hgl="hg log --template '{rev} | {node|short} | {date|isodatesec} | {author|user}: {desc|strip|firstline}\\n' | less"
-alias hgll="hg log -G -l9 --template 'changeset:   {rev}:{node|short}\\nbranch:      {branch}\\nparent:      {p1rev}:{p1node|short}{ifeq(p2rev, \"-1\", \"\", \", {p2rev}:{p2node|short}\")}\\nuser:        {author}\\ndate:        {date|isodatesec}\\ndescription: {desc}\\n\\n' | less"
+alias hgl="hg log --template '{rev} | {node|short} | {date|isodatesec} | {author|user} | {branch} | {desc|strip|firstline}\\n'"
+alias hgll="hg log -G -l9 --template 'changeset:   {rev}:{node|short}\\nbranch:      {branch}\\nparent:      {p1rev}:{p1node|short}{ifeq(p2rev, \"-1\", \"\", \", {p2rev}:{p2node|short}\")}\\nuser:        {author}\\ndate:        {date|isodatesec}\\ndescription: {desc}\\n\\n' --stat"
+alias hglll="hg log -G -l9 --template 'changeset:   {rev}:{node}\\nbranch:      {branch}\\nparent:      {p1rev}:{p1node}{ifeq(p2rev, \"-1\", \"\", \", {p2rev}:{p2node}\")}\\nuser:        {author}\\ndate:        {date|isodatesec}\\ndescription: {desc}\\n\\n' --stat"
 function hglm() {
     echo "Looking for merges in $(hg branch)."
     echo "rev | node | p1rev | p2rev | branch | date | user | desc_first_line";
@@ -385,3 +387,19 @@ function space_used() {
     echo "APCO Logs"; du -d 1 -h ~/Projects/APCO-SOS/logs;
     # plus any other common places that eat up space.
 }
+
+function rand_str() {
+    # Lifted and modified from https://gist.github.com/earthgecko/3089509
+    len=$(echo "$1" | sed 's/[^0-9]*//g')
+    if [ "z$len" == "z" ]; then
+        len=32
+    fi
+    echo "rndstr:$(cat /dev/urandom | env LC_CTYPE=C tr -dc 'a-zA-Z0-9' | fold -w "$len" | head -n 1)"
+}
+
+# Opting out of .NET Core 1.1's "send data to MS" feature
+DOTNET_CLI_TELEMETRY_OPTOUT=1
+
+# When extra characters show up when pasting, run this to turn it off.
+# Ex: copied "DATA", pasted "01~DATA~00".
+alias paste_extra_chars="printf '\e[?2004l'"

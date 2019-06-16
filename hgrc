@@ -15,6 +15,7 @@ mq=
 rebase=
 flow=$HOME/.hgext/hgflow.py
 hgext.extdiff=
+hgext.convert=
 
 [flow]
 # Do not use.  Causes error:
