@@ -20,7 +20,6 @@
 # 	clean = git-lfs clean -- %f
 # 	smudge = git-lfs smudge -- %f
 
-editor = vim
 
 [hub]
 protocol = https
@@ -31,5 +30,5 @@ protocol = https
 
 [core]
 	excludesfile = /Users/adam/.gitignore_global
-
+	editor = vim
 
