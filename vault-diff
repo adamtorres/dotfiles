@@ -16,8 +16,9 @@ trap "rm -rf $mydir" EXIT
 
 repo_copy="$mydir/repo_copy"
 working_copy="$mydir/working_copy"
-/opt/pyenv/versions/amplify-codes/bin/ansible-vault --vault-password-file=~/.ansible_vault decrypt "$1" --output="$repo_copy" > /dev/null
-/opt/pyenv/versions/amplify-codes/bin/ansible-vault --vault-password-file=~/.ansible_vault decrypt "$2" --output="$working_copy" > /dev/null
+# TODO: Use "pyenv whence ansible-vault" to find the version containing ansible.
+$PYENV_ROOT/versions/amplify-codes/bin/ansible-vault --vault-password-file=~/.ansible_vault decrypt "$1" --output="$repo_copy" > /dev/null
+$PYENV_ROOT/versions/amplify-codes/bin/ansible-vault --vault-password-file=~/.ansible_vault decrypt "$2" --output="$working_copy" > /dev/null
 
 echo "vvvv diff -C 3 \"$repo_copy\" \"$working_copy\""
 diff -C 3 "$repo_copy" "$working_copy"

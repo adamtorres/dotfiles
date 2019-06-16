@@ -1,31 +1,37 @@
-# source /opt/boxen/env.sh
-export PYENV_ROOT='/opt/pyenv'
+# brew install pyenv
+export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+
+# brew install pyenv-virtualenv
 if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
-export PATH="/Users/atorres/NotBackedUp/NOTWORK/Nexus/platform-tools:$PATH"
 
-export RBENV_ROOT='/opt/rbenv'
-eval "$(rbenv init -)"
+#### Do not have ruby installed?
+# export RBENV_ROOT='/opt/rbenv'
+# eval "$(rbenv init -)"
 
-export MANPATH="/usr/local/opt/findutils/libexec/gnuman:$MANPATH"
+# brew install findutils
+# export MANPATH="/usr/local/opt/findutils/libexec/gnuman:$MANPATH"
 
+# Trying to not install things like this on the bare metal os.
 # export PATH=$PATH:/opt/wkhtmltopdf/bin:/opt/ngrok:/opt/utils
-export PATH=$PATH:/opt/mongodb/bin:/opt/redis/bin
+# export PATH=$PATH:/opt/mongodb/bin:/opt/redis/bin
 
 # No clue why this happened but java command line failed at some point.
 # Have to manually set this.
-export JAVA_HOME="/Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/"
+# export JAVA_HOME="/Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/"
 
 # (l)ong, (a)ll, (p)ath marked, (h)uman numbers, (t)ime sorted, (r)everse sort
 alias ll='ls -laph'
 alias lt='ls -laphtr'
 
+# brew install tree
 # A sorta short version of tree which only shows 2 levels of folders
 alias bush='tree -d -L 2 -I "__pycache__|.hg|.git|.DS_Store|htmlcov|.hgcheck|src"'
 alias tree='tree -a -I "__pycache__|.hg|.git|.DS_Store|htmlcov|.hgcheck|src|.idea" --dirsfirst'
 alias realtree='/usr/local/bin/tree'
 
+# TODO: Does this need findutils installed?
 # Removes cached python files
 alias clean='find . -name *.pyc -delete && find . -type d -name __pycache__ -delete && find . -name *.*.orig -delete'
 
@@ -34,30 +40,17 @@ alias clean='find . -name *.pyc -delete && find . -type d -name __pycache__ -del
 alias comptxt="find . -type f -iname '*.txt' -print -exec gzip {} \;"
 alias uncomptxt="find . -type f -iname '*.txt.gz' -print -exec gunzip {} \;"
 
-# Run coverage.  If no errors, build html report and open in default browser.
-# The omit option removes third party libraries from the report.
-# Include orb
-alias coverorb='coverage run --omit=/opt/boxen/pyenv*,tests/*,src/* -m unittest discover ; coverage html ; open htmlcov/index.html'
-# Exclude orb
-alias cover='coverage run --omit=/opt/boxen/pyenv*,tests/*,src/*,../orb/* -m unittest discover ; coverage html ; open htmlcov/index.html'
-
 # Find and show all links to source being used by pyenv versions.
 # Output is the path/name of the egg-link and the contents showing where the link is pointing.
 # Useful for spotting links pointing to silly locations.
-alias pylinks="find /opt/boxen/pyenv/versions -iname *.egg-link -exec sh -c 'echo {}; cat {}; echo' \;"
+alias pylinks="find $PYENV_ROOT/versions -iname *.egg-link -exec sh -c 'echo {}; cat {}; echo' \;"
 
+# TODO: Verify this against Django 2+
 # Show missing migrations.  Output will be a list of all apps and only migrations which have not been run.
 alias mm='./manage.py showmigrations | grep -v -e "\[\X\]" -e "\(\*\)"'
 
-# Simple shortcut to ssh into the dev server.
-alias gogodev='ssh -i ~/.ssh/macbookair_id_rsa ubuntu@10.1.10.214'
-alias govpncs='ssh -i ~/.ssh/macbookair_id_rsa ubuntu@staging.amplify-nation.com -p 63218 -L 6432:127.0.0.1:6432'
-alias gogoh='echo "ssh -X -p 64079 adam@1.2.3.4"'
-# motion control # ssh -L 1234:127.0.0.1:8080 -L 1235:127.0.0.1:8081 -L 1236:127.0.0.1:8082 adam@1.2.3.4 -p 64079
-# For the dlink webcam # ssh -L 1234:1.2.3.105:554 adam@1.2.3.4 -p 64079
-
 # List open network connections while hiding the ones from boring applications and such we likely don't care about.
-alias op='lsof -n -i -P | grep -v -e ^Microsoft -e ^Dropbox -e ^BetterTou -e ^HipChat -e ^GitHub -e ^Google -e ^Finder -e ^Office365 -e ^firefox -e ^sharingd -e ^SystemUIS -e UserEvent -e ^ARDAgent -e ^Slack -e ^WiFi -e ^com\.apple'
+alias op='lsof -n -i -P | grep -v -e ^Microsoft -e ^Dropbox -e ^GitHub -e ^Google -e ^Finder -e ^Office365 -e ^firefox -e ^sharingd -e ^SystemUIS -e UserEvent -e ^ARDAgent -e ^Slack -e ^WiFi -e ^com\.apple'
 
 # Cuts stdin to width out terminal as reported by 'tput cols'.  Subtracts 5 to give a little gap.  Works in pipes
 alias ctw='cut -c1-$(($(tput cols)-5))'
@@ -77,12 +70,11 @@ alias running='ps aux | grep [p]ython'
 #     echo "Found these $PIDS"
 # }
 
+# TODO: Are these really necessary if I try to not install any services locally?  Possibly the wi* might be ok.
 # Tell me What Is Going On
 alias wigo='python -V; pyenv version'
-
 # Tell me What Is Really Going On
 alias wirgo='printf "\nEnvironment:\n"; wigo; printf "\nRunning Scripts:\n"; running; printf "\nOpen Ports:\n"; op;'
-
 # What is running.  shows the various bits likely involved with the project.
 alias wir='(ps -ef | head -n 1; ps -ef | grep -E -e "(celery|uwsgi|nginx|python)" | grep -v "(celery|uwsgi|nginx|python)" | sort -k8 | cut -c1-250)'
 
@@ -131,29 +123,25 @@ function whid() {
     hg diff -r $(hg id --num -r $(hg log -r "max(ancestors($(hg branch)) and not branch($(hg branch)))" --limit 1 --template '{branch}'))
 }
 
+# Nice idea but not reliable.  Seems to follow only the current branch's history.
+# # What Did I Do?
+# alias wdid='wdsd atorres@amplify-nation.com'
+#
+# # What Did Somebody Do?
+# function wdsd () {
+#     hg log -u "$1" --template "{rev} | {node|short} | {date|isodatesec} | {author|user} | {branches}\n\t{desc|strip|tabindent}\n" --date ">yesterday"
+# }
+
 # Show comments in the current branch.  Helpful to spot commented debug code and inappropriate comments.
 function find_comments() {
     hg diff -r $(hg id --num -r $(hg log -r "max(ancestors($(hg branch)) and not branch($(hg branch)))" --limit 1 --template '{branch}')) | grep -E -e "^\+ +#" -e "^diff"
 }
 
+# Experimental function to cycle through listed repos and update each.
 function uphg() {
     declare -a repos=(
-    "orb"
-    "imb"
-    "triggers"
-    "sos"
-    "sos_bug"
-    "rules-engine"
-    "direct-mail"
-    "email-backend"
-    "sms-backend"
-    "livecall-backend"
-    "cstore"
-    "cstore_bugs"
-    "cstore-pull-req"
-    "cstore_imb"
-    "cstore_imb/src/imb"
-    "test/cstore"
+    "repo1"
+    "repo2"
     )
 
     for r in "${repos[@]}"
@@ -169,17 +157,6 @@ function uphg() {
     done
 }
 
-# Nice idea but not reliable.  Seems to follow only the current branch's history.
-# # What Did I Do?
-# alias wdid='wdsd atorres@amplify-nation.com'
-#
-# # What Did Somebody Do?
-# function wdsd () {
-#     hg log -u "$1" --template "{rev} | {node|short} | {date|isodatesec} | {author|user} | {branches}\n\t{desc|strip|tabindent}\n" --date ">yesterday"
-# }
-
-alias c='printf "\nDon'"'"'t wanna clear the screen.\n\n"'
-
 # Not exactly the same as lsusb but does what I need when I think of lsusb.
 # That is, list the usb devices.
 alias lsusb='system_profiler SPUSBDataType'
@@ -187,27 +164,19 @@ alias lsusb='system_profiler SPUSBDataType'
 # (\t)ime (\w)orking directory (\n)ewline (\u)ser@(\h)ost
 export PS1="\t \w\n\u@\h: "
 
-#Combines mkdir and cd commands.
+# Combines mkdir and cd commands.
 function mkcd () { mkdir -p "$@" && eval cd "\"\$$#\""; }
 
+# brew install source-highlight
 # Get syntax highlighting on less command.
-# need to run 'brew install source-highlight'
 LESSPIPE=`which src-hilite-lesspipe.sh`
 export LESSOPEN="| ${LESSPIPE} %s"
 export LESS='-R'
 
-# ### LESS ###
-# # Enable syntax-highlighting in less.
-# # brew install source-highlight
-# # First, add these two lines to ~/.bashrc
-# export LESSOPEN="| /usr/local/bin/src-hilite-lesspipe.sh %s"
-# export LESS=" -R "
-# alias less='less -m -N -g -i -J --underline-special --SILENT'
-# alias more='less'
-
+# brew install autojump
+# Allows jumping to frequently used directories
 #[[ -s ~/.autojump/etc/profile.d/autojump.bash ]] && . ~/.autojump/etc/profile.d/autojump.bash
-
-[[ -s `brew --prefix`/etc/autojump.sh ]] && . `brew --prefix`/etc/autojump.sh
+# [[ -s `brew --prefix`/etc/autojump.sh ]] && . `brew --prefix`/etc/autojump.sh
 
 function hnt() {
     # Head N Tail
@@ -228,6 +197,9 @@ function zort() {
     fi
 }
 
+
+# brew install youtube-dl
+# command line download of youtube videos
 function ytdl() {
     if [ "x$1" == "x" ]; then
         echo ""
@@ -259,7 +231,7 @@ function ytdlm() {
     fi
 }
 
-
+# brew install homebrew/cask/vlc
 function mp4to3() {
     if [ "x$1" == "x" ]; then
         echo ""
@@ -299,6 +271,8 @@ function wavtomp3() {
     mv this_is_a_temp_file.mp3 "$OUT_FILE"
 }
 
+# Specifically for hickok45's radio shows.  He has stopped those and switch to another format.
+# TODO: Figure out if this needs changed.
 function radioshow() {
     if [ "x$2" == "x" ]; then
         echo ""
@@ -327,30 +301,29 @@ function set_title() {
     echo -ne "\033]0;$@\007"
 }
 
-function get_project() {
-    tmp=${PWD#$HOME/Projects/APCO-SOS/}
-    if [ "$tmp" == "$PWD" ]; then
-        echo -n ${PWD#$HOME/}
-    else
-        # With subdirs
-        # echo -n $tmp
-        # Without subdirs
-        echo -n "${tmp%%/*}"
-    fi
-}
-
-export PROMPT_COMMAND='set_title `get_project`'
+# An attempt to keep the terminal title to the project's name instead of the last directory in the chain.
+# TODO: Not sure if this is still useful.
+# function get_project() {
+#     tmp=${PWD#$HOME/Projects/APCO-SOS/}
+#     if [ "$tmp" == "$PWD" ]; then
+#         echo -n ${PWD#$HOME/}
+#     else
+#         # With subdirs
+#         # echo -n $tmp
+#         # Without subdirs
+#         echo -n "${tmp%%/*}"
+#     fi
+# }
+# export PROMPT_COMMAND='set_title `get_project`'
 # export PROMPT_COMMAND='echo -ne "\033]0;`get_project`\007"'
 
-function tailpg() {
-    (ls -1t ~/Projects/APCO-SOS/logs/postgres/postgresql*.log | head -n 1 && tail -F $(ls -1t ~/Projects/APCO-SOS/logs/postgres/postgresql*.log | head -n 1))
-    # (ls -1t /usr/local/var/postgres/pg_log/postgresql*.log | head -n 1 && tail -F $(ls -1t /usr/local/var/postgres/pg_log/postgresql*.log | head -n 1))
-    # tail -f $(ls -1tr /opt/boxen/data/postgresql-9.4/pg_log/postgresql-* | tail -n 1)
-}
-# for file in /Users/$USER/Music/*.mp4;
-# do
-#     /Applications/VLC.app/Contents/MacOS/VLC -I dummy "$file" --sout="#transcode{acodec=mp3,vcodec=dummy}:standard{access=file,mux=raw,dst=\"$(echo "$file" | sed 's/\.[^\.]*$/.mp3/')\"}" vlc://quit;
-# done
+# Find the most recent PG log file and tail/follow it.
+# TODO: Not likely useful as I'm trying to not install things like this on the bare metal os.
+# function tailpg() {
+#     (ls -1t ~/Projects/APCO-SOS/logs/postgres/postgresql*.log | head -n 1 && tail -F $(ls -1t ~/Projects/APCO-SOS/logs/postgres/postgresql*.log | head -n 1))
+#     # (ls -1t /usr/local/var/postgres/pg_log/postgresql*.log | head -n 1 && tail -F $(ls -1t /usr/local/var/postgres/pg_log/postgresql*.log | head -n 1))
+#     # tail -f $(ls -1tr /opt/boxen/data/postgresql-9.4/pg_log/postgresql-* | tail -n 1)
+# }
 
 # idea: simple find/replace function to make it easier to do rather than
 # always having to google for methods.
@@ -376,15 +349,12 @@ function show_settings(){
     grep -v -E -e "^[[:space:]]*[#]" -e "^$" "$1" | sed -e "s/[[:space:]]*#.*$//" -e "s/[[:space:]]*$//" | sort
 }
 
-. ~/.ssh/home_alias
-
 # iterm shell integration didn't work nice.
 # Random stack exchange showed this and it worked.  Would need to work up something to tell when ssh starts and switch.
 # echo -e "\033]50;SetProfile=ampops\a"
 
 function space_used() {
     echo "Docker"; du -d 1 -h ~/Library/Containers/com.docker.docker/Data;
-    echo "APCO Logs"; du -d 1 -h ~/Projects/APCO-SOS/logs;
     # plus any other common places that eat up space.
 }
 
@@ -397,8 +367,9 @@ function rand_str() {
     echo "rndstr:$(cat /dev/urandom | env LC_CTYPE=C tr -dc 'a-zA-Z0-9' | fold -w "$len" | head -n 1)"
 }
 
+# How to install?
 # Opting out of .NET Core 1.1's "send data to MS" feature
-DOTNET_CLI_TELEMETRY_OPTOUT=1
+# DOTNET_CLI_TELEMETRY_OPTOUT=1
 
 # When extra characters show up when pasting, run this to turn it off.
 # Ex: copied "DATA", pasted "01~DATA~00".

@@ -1,9 +1,9 @@
 [ui]
-username = Adam Torres <atorres@amplify-nation.com>
+username = Adam Torres <adam_programmer@hotmail.com>
 ssh = ssh -C
 
 [alias]
-out2 = !$HG -q outgoing --style ~/Projects/dotfiles/hg_outgoing_style.txt | sort -u
+out2 = !$HG -q outgoing --style ~/.dotfiles/hg_outgoing_style.txt | sort -u
 
 [defaults]
 log = -f
@@ -31,8 +31,10 @@ version_prefix=
 #   $parent2, $plabel2 - filename, descriptive label of second parent
 #   $root              - repository root
 #   $parent is an alias for $parent1.
+
 [extdiff]
-cmd.vdiff = $HOME/Projects/dotfiles/vault-diff
+# vault-diff is for ansible vault files.  Not being used and incompletely set up at the moment.
+# cmd.vdiff = $HOME/.dotfiles/vault-diff
 
 
 # Would like these patterns to be applied to diff
