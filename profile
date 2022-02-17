@@ -1,9 +1,21 @@
 # Just a bogus change to test something
 
-# brew install pyenv
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+export PATH="/usr/local/sbin:$PATH"
+if which pyenv > /dev/null; then
+  # brew install pyenv
+  export PYENV_ROOT="$HOME/.pyenv"
+  export PATH="$PYENV_ROOT/bin:$PATH"
+  eval "$(pyenv init --path)"
+  eval "$(pyenv init -)"
+fi
+
+# brew install ruby@3.0
+export PATH="/usr/local/opt/ruby@3.0/bin:$PATH"
+# For compilers to find ruby@3.0 you may need to set:
+export LDFLAGS="-L/usr/local/opt/ruby@3.0/lib"
+export CPPFLAGS="-I/usr/local/opt/ruby@3.0/include"
+# For pkg-config to find ruby@3.0 you may need to set:
+export PKG_CONFIG_PATH="/usr/local/opt/ruby@3.0/lib/pkgconfig"
 
 # brew install pyenv-virtualenv
 if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
@@ -164,7 +176,7 @@ function uphg() {
 alias lsusb='system_profiler SPUSBDataType'
 
 # (\t)ime (\w)orking directory (\n)ewline (\u)ser@(\h)ost
-export PS1="\t \w\n\u@\h: "
+export PS1="\n\t \w\n\u@\h: "
 
 # Combines mkdir and cd commands.
 function mkcd () { mkdir -p "$@" && eval cd "\"\$$#\""; }
@@ -376,3 +388,6 @@ function rand_str() {
 # When extra characters show up when pasting, run this to turn it off.
 # Ex: copied "DATA", pasted "01~DATA~00".
 alias paste_extra_chars="printf '\e[?2004l'"
+
+export UID=$(id -u)
+export GID=$(id -g)

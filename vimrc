@@ -66,3 +66,6 @@ if has("statusline") && !&cp
   """""""  set statusline+=%{SyntasticStatuslineFlag()}
   set statusline+=%*
 endif
+
+""""""" autocmd FileType python setlocal expandtab shiftwidth=4 softtabstop=4
+autocmd FileType sh setlocal shiftwidth=2

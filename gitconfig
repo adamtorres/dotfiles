@@ -32,3 +32,25 @@ protocol = https
 	excludesfile = /Users/adam/.gitignore_global
 	editor = vim
 
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+[commit]
+	template = /Users/adam/.stCommitMsg
+
+#### Force use of https instead of ssh
+# [url "https://github.com/"]
+# 	insteadOf = git@github.com:
+# [url "https://"]
+# 	insteadOf = git://
+
+#### Force use of ssh instead of https
+[url "git@github.com:"]
+	insteadOf = https://github.com/
+[url "git://"]
+	insteadOf = https://
+[init]
+	defaultBranch = main
