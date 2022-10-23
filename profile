@@ -64,7 +64,7 @@ alias pylinks="find $PYENV_ROOT/versions -iname *.egg-link -exec sh -c 'echo {};
 alias mm='./manage.py showmigrations | grep -v -e "\[\X\]" -e "\(\*\)"'
 
 # List open network connections while hiding the ones from boring applications and such we likely don't care about.
-alias op='lsof -n -i -P | grep -v -e ^Microsoft -e ^Dropbox -e ^GitHub -e ^Google -e ^Finder -e ^Office365 -e ^firefox -e ^sharingd -e ^SystemUIS -e UserEvent -e ^ARDAgent -e ^Slack -e ^WiFi -e ^com\.apple'
+alias op='lsof -n -i -P | grep -v -e ^Microsoft -e ^Dropbox -e ^GitHub -e ^Google -e ^Finder -e ^Office365 -e ^firefox -e ^sharingd -e ^SystemUIS -e UserEvent -e ^ARDAgent -e ^Slack -e ^WiFi -e ^com\.apple -e ^rapportd'
 
 # Cuts stdin to width out terminal as reported by 'tput cols'.  Subtracts 5 to give a little gap.  Works in pipes
 alias ctw='cut -c1-$(($(tput cols)-5))'
@@ -101,6 +101,9 @@ alias gco="git checkout"
 alias gcb="git checkout -b"
 alias gtb="git branch"
 alias gcm="git commit"
+function git_branch_log() {
+  git log $(git branch --show-current) --not $(git for-each-ref --format='%(refname)' refs/heads/ | grep -v "refs/heads/$(git branch --show-current)")
+}
 
 # hg Alias's
 alias hgd='hg diff | grep "^[!-+]"'
@@ -176,7 +179,7 @@ function uphg() {
 alias lsusb='system_profiler SPUSBDataType'
 
 # (\t)ime (\w)orking directory (\n)ewline (\u)ser@(\h)ost
-export PS1="\n\t \w\n\u@\h: "
+export PS1="\n\n\t \w\n\u@\h: "
 
 # Combines mkdir and cd commands.
 function mkcd () { mkdir -p "$@" && eval cd "\"\$$#\""; }
@@ -391,3 +394,8 @@ alias paste_extra_chars="printf '\e[?2004l'"
 
 export UID=$(id -u)
 export GID=$(id -g)
+export PATH="/usr/local/opt/libpq/bin:$PATH"
+export PATH="/usr/local/opt/postgresql@13/bin:$PATH"
+export LDFLAGS="-L/usr/local/opt/postgresql@13/lib"
+export CPPFLAGS="-I/usr/local/opt/postgresql@13/include"
+
